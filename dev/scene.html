@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dev · Quirófano 3D</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet" />
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #2a1733; font-family: 'Nunito', system-ui, sans-serif; }
+      #gl { width: 100vw; height: 100vh; display: block; }
+      #info { position: fixed; left: 10px; top: 8px; color: #fff6fb; font-size: 13px; background: #3b2146cc; padding: 6px 10px; border-radius: 10px; pointer-events: none; line-height: 1.4; }
+      #info b { color: #ff8fc7; font-family: 'Baloo 2', system-ui; }
+      #pick { color: #9ff0d0; font-weight: 800; }
+      #marker { position: fixed; width: 14px; height: 14px; margin: -7px 0 0 -7px; border: 2px solid #ff2e93; border-radius: 50%; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <canvas id="gl"></canvas>
+    <div id="info"><b>Quirófano · dev</b><br />1/2/3 cámara (general · herida · micro) · I instrumento · A activo · H calor · L selfie de Gigi · S temblor · C cortar · B sangrado<br /><span id="pick">Mueve el ratón sobre la herida</span></div>
+    <div id="marker"></div>
+    <script type="module" src="./scene.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HUD del quirófano — dev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; }
+      #stage { position: fixed; inset: 0; will-change: transform; background: radial-gradient(ellipse at 50% 45%, #e6d2f7 0 40%, #b99ad9 75%, #7d5aa3 100%); }
+      /* Paños lila y "herida" falsa en el ~60 % central, para comprobar que el HUD no la tapa */
+      #drape { position: absolute; left: 20%; right: 20%; top: 17%; bottom: 17%; border-radius: 28px; background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 14px, rgba(0,0,0,.03) 14px 28px), linear-gradient(#c7a4ea, #a987d4);
+        box-shadow: inset 0 0 40px rgba(60,20,90,.35); }
+      #wound { position: absolute; left: 25%; right: 25%; top: 24%; bottom: 25%; border-radius: 18px; overflow: hidden;
+        background: radial-gradient(ellipse at 50% 50%, #9e2230 0 18%, #d9707a 30%, #f0b39a 55%, #f4c7ad 80%); box-shadow: inset 0 0 30px rgba(90,10,20,.45), 0 0 0 6px rgba(255,255,255,.35); }
+      #wound::after { content: ''; position: absolute; left: 12%; right: 12%; top: 46%; height: 8%; border-radius: 50%; background: radial-gradient(ellipse, #5b0610, #a3121f 60%, transparent 70%); }
+      #dev { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 800 12px 'Nunito', sans-serif; color: rgba(255,255,255,.75); pointer-events: none; text-align: center; }
+      #ui-root { position: absolute; inset: 0; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <div id="stage"><div id="drape"></div><div id="wound"></div></div>
+    <div id="dev">herida (zona central)<br />?state=calm|busy|crisis|arrest|nosignal|immersive · teclas: A alerta, P texto, T aviso, S subtítulo</div>
+    <div id="ui-root"></div>
+    <script type="module" src="./hud.ts"></script>
+  </body>
+</html>

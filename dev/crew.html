@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tripulación — quirófano de pruebas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@600;800&display=swap" rel="stylesheet" />
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #2a1d33; font-family: 'Nunito', system-ui, sans-serif; color: #3b2146; }
+      canvas { display: block; }
+      .panel { position: fixed; top: 10px; background: rgba(255, 246, 251, 0.92); border-radius: 16px; padding: 10px 12px; box-shadow: 0 6px 18px rgba(40, 10, 50, 0.25); font-size: 12px; }
+      #left { left: 10px; width: 232px; }
+      #right { right: 10px; width: 250px; }
+      h2 { margin: 0 0 6px; font: 800 17px 'Baloo 2', system-ui; }
+      h3 { margin: 8px 0 4px; font: 800 12px 'Nunito'; text-transform: uppercase; letter-spacing: 0.6px; opacity: 0.7; }
+      button { font: 700 11px 'Nunito', system-ui; border: 0; border-radius: 999px; padding: 4px 9px; margin: 2px 1px; cursor: pointer; background: #c8a2e8; color: #3b2146; }
+      button.kind { background: #9ff0d0; }
+      button.domina { background: #ff2e93; color: #fff; }
+      button.firm { background: #ffb8dc; }
+      button.misc { background: #ffe08a; }
+      .row { display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
+      .row b { width: 58px; display: inline-block; }
+      table { border-collapse: collapse; width: 100%; }
+      td { padding: 2px 3px; border-bottom: 1px solid rgba(59, 33, 70, 0.08); }
+      td.k { opacity: 0.7; }
+      .tag { display: inline-block; padding: 1px 7px; border-radius: 999px; background: #9ff0d0; font-weight: 800; }
+      .tag.problem { background: #ff2e93; color: #fff; }
+      #subs { position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%); width: min(640px, 60vw); display: flex; flex-direction: column; gap: 4px; align-items: center; pointer-events: none; }
+      .sub { background: rgba(59, 33, 70, 0.86); color: #fff; padding: 5px 14px; border-radius: 14px; font: 700 14px 'Nunito'; box-shadow: 0 4px 10px rgba(0,0,0,0.25); }
+      .sub .who { color: #ff8fc7; margin-right: 6px; font-weight: 800; }
+      .sub.toast { background: #ff2e93; }
+      .sub.sfx { background: rgba(200, 162, 232, 0.9); color: #3b2146; font-size: 12px; }
+      #light { height: 8px; border-radius: 6px; background: linear-gradient(90deg, #ffe08a, #fff6c0); }
+    </style>
+  </head>
+  <body>
+    <div class="panel" id="left">
+      <h2>Tripulación</h2>
+      <h3>Caos (1–7)</h3>
+      <div class="row" id="chaos"></div>
+      <h3>Órdenes (Z/X/C · Mayús = Dómina · Alt = Firme)</h3>
+      <div id="cmds"></div>
+      <h3>Acciones</h3>
+      <div class="row" id="misc"></div>
+    </div>
+    <div class="panel" id="right">
+      <h2>Estado</h2>
+      <div id="light"></div>
+      <table id="state"></table>
+    </div>
+    <div id="subs"></div>
+    <script type="module" src="./crew.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,314 @@
+/* Mini-juego de atrapar tornillos (ScrewCatch) y paneles DOM de los pasos B (placa, tornillos). */
+
+/* ───────── ScrewCatch ───────── */
+.sc-root {
+  position: absolute;
+  left: 50%;
+  bottom: 112px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 40;
+  font-family: var(--font-body, Nunito, system-ui, sans-serif);
+  animation: sc-in 0.22s cubic-bezier(.2, 1.4, .5, 1);
+}
+.sc-card {
+  position: relative;
+  width: 236px;
+  padding: 8px 10px 10px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #fff6fb 0%, #ffe1f0 100%);
+  border: 3px solid var(--lilac, #c8a2e8);
+  box-shadow: 0 8px 24px rgba(59, 33, 70, .35), inset 0 2px 0 #fff;
+}
+.sc-title {
+  font: 800 13px var(--font-title, 'Baloo 2', Nunito, sans-serif);
+  color: var(--ink, #3b2146);
+  text-align: center;
+  letter-spacing: .2px;
+}
+.sc-key {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid var(--lavender, #b79cf2);
+  box-shadow: 0 2px 0 var(--lavender, #b79cf2);
+  font: 800 11px var(--font-body, Nunito, sans-serif);
+}
+.sc-stage { position: relative; height: 112px; margin-top: 4px; }
+.sc-tray {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 170px;
+  height: 46px;
+  transform: translateX(-50%);
+  border-radius: 50% / 60%;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(255, 255, 255, .95) 0 30%, transparent 60%),
+    linear-gradient(180deg, #eceaf6 0%, #bdb8d6 100%);
+  border: 2px solid #8f86b3;
+  box-shadow: inset 0 -6px 10px rgba(91, 74, 122, .35), 0 4px 0 #d8b6e9;
+}
+.sc-tray i {
+  position: absolute;
+  top: 16px;
+  width: 10px;
+  height: 10px;
+  background: var(--bubblegum, #ff8fc7);
+  transform: rotate(45deg);
+  border-radius: 2px;
+  opacity: .8;
+}
+.sc-tray i::before, .sc-tray i::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: inherit;
+}
+.sc-tray i::before { left: -5px; top: 0; }
+.sc-tray i::after { left: 0; top: -5px; }
+.sc-tray i:nth-child(1) { left: 26px; }
+.sc-tray i:nth-child(2) { right: 26px; }
+.sc-tray i:nth-child(3) { left: 50%; top: 30px; width: 7px; height: 7px; }
+.sc-target, .sc-ring {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.sc-target { border: 3px dashed var(--mint-deep, #3fcf9c); background: rgba(159, 240, 208, .18); }
+.sc-ring {
+  border: 5px solid var(--fuchsia, #ff2e93);
+  box-shadow: 0 0 14px rgba(255, 46, 147, .75), inset 0 0 8px rgba(255, 143, 199, .6);
+  will-change: transform, opacity;
+}
+.sc-screw {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 4px 2px rgba(59, 33, 70, .35));
+  will-change: transform;
+}
+.sc-count {
+  position: absolute;
+  right: 8px;
+  top: 2px;
+  min-width: 26px;
+  text-align: center;
+  font: 800 24px var(--font-title, 'Baloo 2', Nunito, sans-serif);
+  color: var(--fuchsia, #ff2e93);
+  -webkit-text-stroke: 1px #fff;
+  paint-order: stroke fill;
+  pointer-events: none;
+}
+.sc-again .sc-card { border-color: var(--fuchsia, #ff2e93); animation: sc-shake .35s linear; }
+.sc-again .sc-title { color: var(--fuchsia, #ff2e93); }
+.sc-pop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 44px;
+  text-align: center;
+  font: 800 30px var(--font-title, 'Baloo 2', Nunito, sans-serif);
+  -webkit-text-stroke: 1.5px var(--ink, #3b2146);
+  paint-order: stroke fill;
+  opacity: 0;
+  pointer-events: none;
+}
+.sc-perfect .sc-pop, .sc-good .sc-pop, .sc-miss .sc-pop { animation: sc-pop .55s cubic-bezier(.2, 1.6, .4, 1) forwards; }
+.sc-perfect .sc-pop { color: var(--gold, #f5c542); text-shadow: 0 0 12px rgba(245, 197, 66, .9); }
+.sc-good .sc-pop { color: var(--mint, #9ff0d0); }
+.sc-miss .sc-pop { color: var(--bad, #ff4d6d); }
+.sc-perfect .sc-card { border-color: var(--gold, #f5c542); box-shadow: 0 0 26px rgba(245, 197, 66, .8), 0 8px 24px rgba(59, 33, 70, .35); }
+.sc-good .sc-card { border-color: var(--mint-deep, #3fcf9c); }
+.sc-miss .sc-card { border-color: var(--bad, #ff4d6d); animation: sc-shake .35s linear; }
+.sc-perfect .sc-screw, .sc-good .sc-screw { animation: sc-catch .5s ease-in forwards; }
+.sc-miss .sc-screw { animation: sc-drop .7s cubic-bezier(.5, 0, .9, .5) forwards; }
+.sc-perfect .sc-target, .sc-good .sc-target { border-style: solid; background: rgba(159, 240, 208, .45); }
+
+@keyframes sc-in { from { transform: translateX(-50%) translateY(30px) scale(.85); opacity: 0; } }
+@keyframes sc-pop { 0% { opacity: 0; transform: scale(.4); } 60% { opacity: 1; transform: scale(1.15); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes sc-catch { to { transform: translate(-50%, -140%) scale(1.25) rotate(-20deg); opacity: 0; } }
+@keyframes sc-drop {
+  0% { transform: translate(-50%, -50%) rotate(0); }
+  60% { transform: translate(-30%, 40%) rotate(160deg); }
+  75% { transform: translate(-25%, 25%) rotate(200deg); }
+  100% { transform: translate(-10%, 60%) rotate(260deg); opacity: .4; }
+}
+@keyframes sc-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+}
+
+/* ───────── Paneles de los pasos B (placa, tornillos) ───────── */
+.sb-panel {
+  position: absolute;
+  left: 50%;
+  bottom: 108px;
+  transform: translateX(-50%);
+  z-index: 40;
+  pointer-events: auto;
+  padding: 12px 16px 14px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #fff9fc 0%, #ffe9f4 100%);
+  border: 3px solid var(--lilac, #c8a2e8);
+  box-shadow: 0 10px 30px rgba(59, 33, 70, .38), inset 0 2px 0 #fff;
+  color: var(--ink, #3b2146);
+  font-family: var(--font-body, Nunito, system-ui, sans-serif);
+  animation: sb-in .25s cubic-bezier(.2, 1.4, .5, 1);
+  user-select: none;
+}
+.sb-title { font: 800 18px var(--font-title, 'Baloo 2', Nunito, sans-serif); color: var(--fuchsia, #ff2e93); text-align: center; line-height: 1.1; }
+.sb-sub { font-size: 12px; font-weight: 700; color: var(--ink-soft, #6d4a7a); text-align: center; margin: 2px 0 10px; }
+.sb-key {
+  display: inline-block;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid var(--lavender, #b79cf2);
+  box-shadow: 0 2px 0 var(--lavender, #b79cf2);
+  font: 800 12px var(--font-body, Nunito, sans-serif);
+  color: var(--ink, #3b2146);
+  text-align: center;
+}
+.sb-cards { display: flex; gap: 12px; justify-content: center; }
+.sb-card {
+  position: relative;
+  width: 178px;
+  padding: 10px 10px 8px;
+  border-radius: 18px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #ffffff 0%, #ffeaf5 100%);
+  border: 3px solid var(--lilac, #c8a2e8);
+  box-shadow: 0 4px 0 #d9b8ee, 0 6px 14px rgba(59, 33, 70, .18);
+  transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+  text-align: center;
+}
+.sb-card:hover { transform: translateY(-4px) rotate(-1deg); border-color: var(--fuchsia, #ff2e93); box-shadow: 0 8px 0 #f7a8d0, 0 10px 18px rgba(59, 33, 70, .25); }
+.sb-card .sb-key { position: absolute; left: 8px; top: 8px; }
+.sb-card svg { display: block; margin: 12px auto 6px; }
+.sb-card b { display: block; font: 800 14px var(--font-title, 'Baloo 2', Nunito, sans-serif); line-height: 1.1; }
+.sb-card small { display: block; font-size: 12px; font-weight: 700; color: var(--ink-soft, #6d4a7a); }
+.sb-card.sb-wasted { cursor: not-allowed; filter: grayscale(.9); opacity: .6; transform: none; }
+.sb-card.sb-picked { border-color: var(--mint-deep, #3fcf9c); box-shadow: 0 0 0 4px rgba(159, 240, 208, .8); }
+.sb-card.sb-shake { animation: sc-shake .35s linear; }
+.sb-stamp {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  transform: translate(-50%, -50%) rotate(-14deg);
+  padding: 2px 8px;
+  border: 3px solid var(--bad, #ff4d6d);
+  border-radius: 8px;
+  color: var(--bad, #ff4d6d);
+  font: 800 14px var(--font-title, 'Baloo 2', Nunito, sans-serif);
+  background: rgba(255, 255, 255, .85);
+  white-space: nowrap;
+}
+
+/* Contorneado */
+.sb-bendplate { display: block; margin: 0 auto 8px; }
+.sb-gauge {
+  position: relative;
+  width: 380px;
+  height: 30px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffd6e8, #f1e6ff 50%, #ffd6e8);
+  border: 2px solid var(--lavender, #b79cf2);
+  box-shadow: inset 0 3px 6px rgba(59, 33, 70, .18);
+  overflow: hidden;
+  cursor: pointer;
+}
+.sb-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(45deg, #9ff0d0 0 8px, #7fe6c0 8px 16px);
+  border-left: 2px solid var(--mint-deep, #3fcf9c);
+  border-right: 2px solid var(--mint-deep, #3fcf9c);
+}
+.sb-needle {
+  position: absolute;
+  top: 2px;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  will-change: left;
+}
+.sb-needle::before, .sb-needle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  width: 12px;
+  height: 18px;
+  border-radius: 12px 12px 0 0;
+  background: var(--fuchsia, #ff2e93);
+  box-shadow: 0 0 6px rgba(255, 46, 147, .8);
+}
+.sb-needle::before { left: 11px; transform: rotate(-45deg); transform-origin: 0 100%; }
+.sb-needle::after { left: -1px; transform: rotate(45deg); transform-origin: 100% 100%; }
+.sb-beads { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
+.sb-beads span {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--lavender, #b79cf2);
+  background: #fff;
+}
+.sb-beads span.on { background: var(--mint-deep, #3fcf9c); border-color: var(--mint-deep, #3fcf9c); box-shadow: 0 0 8px rgba(63, 207, 156, .8); }
+.sb-beads span.miss { background: var(--bad, #ff4d6d); border-color: var(--bad, #ff4d6d); }
+.sb-flash-good { animation: sb-good .3s ease; }
+.sb-flash-bad { animation: sc-shake .3s linear; }
+
+/* Medición y aviso de tornillo caído */
+.sb-measure-val { font: 800 34px var(--font-title, 'Baloo 2', Nunito, sans-serif); text-align: center; color: var(--ink, #3b2146); line-height: 1; }
+.sb-measure-val small { font-size: 14px; color: var(--ink-soft, #6d4a7a); }
+.sb-opts { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+.sb-opt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 78px;
+  padding: 8px 10px;
+  border: 3px solid var(--lilac, #c8a2e8);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fff, #f4ecff);
+  cursor: pointer;
+  font: 800 16px var(--font-title, 'Baloo 2', Nunito, sans-serif);
+  color: var(--ink, #3b2146);
+  box-shadow: 0 3px 0 #d9b8ee;
+}
+.sb-opt:hover { border-color: var(--fuchsia, #ff2e93); transform: translateY(-2px); }
+.sb-drop { border-color: var(--bad, #ff4d6d); }
+.sb-drop .sb-title { color: var(--bad, #ff4d6d); }
+.sb-choices { display: flex; gap: 12px; justify-content: center; }
+.sb-choice {
+  padding: 8px 12px;
+  border-radius: 14px;
+  border: 3px solid var(--lilac, #c8a2e8);
+  background: #fff;
+  cursor: pointer;
+  font: 800 13px var(--font-body, Nunito, sans-serif);
+  color: var(--ink, #3b2146);
+  max-width: 190px;
+  text-align: center;
+}
+.sb-choice:hover { border-color: var(--fuchsia, #ff2e93); }
+.sb-choice.sb-risky { background: #fff0f3; }
+.sb-wait { font: 800 26px var(--font-title, 'Baloo 2', Nunito, sans-serif); text-align: center; color: var(--ink, #3b2146); }
+
+@keyframes sb-in { from { transform: translateX(-50%) translateY(30px) scale(.9); opacity: 0; } }
+@keyframes sb-good { 50% { box-shadow: 0 0 0 6px rgba(159, 240, 208, .9), inset 0 3px 6px rgba(59, 33, 70, .18); } }

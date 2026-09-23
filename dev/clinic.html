@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dev · Clínica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/ui/theme.css" />
+    <style>
+      #devbar { position: fixed; left: 50%; bottom: 4px; transform: translateX(-50%); z-index: 50; display: flex; gap: 6px; font: 700 11px Nunito, sans-serif; opacity: 0.5; }
+      #devbar:hover { opacity: 1; }
+      #devbar a { color: #fff6fb; background: #3b2146; padding: 2px 8px; border-radius: 8px; text-decoration: none; }
+      #outcome { position: fixed; inset: 40px auto auto 50%; transform: translateX(-50%); z-index: 60; display: none; background: #fff6fb; color: #3b2146; border-radius: 18px; padding: 16px 20px; font: 700 13px/1.4 monospace; white-space: pre; box-shadow: 0 10px 40px #0008; border: 3px solid #ff8fc7; }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="gl"></canvas>
+      <div id="ui-root"></div>
+    </div>
+    <div id="devbar"><a href="?case=0">Tutorial (Panchito)</a><a href="?case=1">Duquesa</a><a href="?case=2">Merengue</a><a href="?case=4">Chorizo</a></div>
+    <pre id="outcome"></pre>
+    <script type="module" src="./clinic.ts"></script>
+  </body>
+</html>

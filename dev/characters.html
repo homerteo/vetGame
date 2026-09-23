@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personajes — pasarela</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@600;800&display=swap" rel="stylesheet" />
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #ffe9f5; font-family: 'Nunito', system-ui, sans-serif; }
+      canvas { display: block; }
+      #hud { position: fixed; top: 12px; left: 16px; color: #3b2146; pointer-events: none; }
+      #hud h1 { margin: 0; font: 800 26px 'Baloo 2', system-ui; letter-spacing: 0.5px; }
+      #hud .anim { display: inline-block; margin-top: 4px; padding: 3px 12px; border-radius: 999px; background: #ff2e93; color: #fff; font: 800 15px 'Nunito'; }
+      #hud .tip { margin-top: 6px; font-size: 12px; opacity: 0.7; }
+      .label { position: fixed; transform: translate(-50%, 0); padding: 2px 9px; border-radius: 999px; background: rgba(255,255,255,0.88);
+        color: #3b2146; font: 800 12px 'Nunito', system-ui; white-space: nowrap; pointer-events: none; box-shadow: 0 2px 6px rgba(120,60,140,0.18); }
+      .label.animal { background: rgba(159,240,208,0.92); }
+    </style>
+  </head>
+  <body>
+    <div id="hud">
+      <h1>Pasarela de personajes</h1>
+      <span class="anim" id="anim">idle</span>
+      <div class="tip">?focus=emiliana · ?anim=walk · ?spin=0 · Espacio: pausa el ciclo</div>
+    </div>
+    <script type="module" src="./characters.ts"></script>
+  </body>
+</html>

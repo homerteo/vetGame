@@ -1,0 +1,77 @@
+/* Tema kinky-kawaii compartido. Los módulos pueden AÑADIR estilos en sus propios .css,
+   pero solo el agente de UI edita este archivo. */
+:root {
+  --lilac: #c8a2e8;
+  --lavender: #b79cf2;
+  --mint: #9ff0d0;
+  --mint-deep: #3fcf9c;
+  --bubblegum: #ff8fc7;
+  --fuchsia: #ff2e93;
+  --vinyl: linear-gradient(135deg, #ff4fa8 0%, #ff2e93 45%, #c4136c 100%);
+  --cream: #fff6fb;
+  --ink: #3b2146;
+  --ink-soft: #6d4a7a;
+  --gold: #f5c542;
+  --good: #3fcf9c;
+  --warn: #ffb347;
+  --bad: #ff4d6d;
+  --blood: #9e0b17;
+  --panel: rgba(255, 246, 251, 0.92);
+  --panel-dark: rgba(59, 33, 70, 0.88);
+  --radius: 18px;
+  --shadow: 0 6px 22px rgba(59, 33, 70, 0.28);
+  --font-title: 'Baloo 2', 'Nunito', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #1c0f24; color: var(--ink); font-family: var(--font-body); }
+#app { position: fixed; inset: 0; }
+#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#ui-root { position: absolute; inset: 0; pointer-events: none; }
+#ui-root > * { pointer-events: auto; }
+
+.k-panel { background: var(--panel); border-radius: var(--radius); box-shadow: var(--shadow); border: 2px solid rgba(200, 162, 232, 0.8); padding: 12px 14px; }
+.k-panel.dark { background: var(--panel-dark); color: var(--cream); border-color: rgba(255, 143, 199, 0.6); }
+.k-title { font-family: var(--font-title); font-weight: 800; letter-spacing: 0.5px; color: var(--fuchsia); }
+.k-btn { font-family: var(--font-title); font-weight: 700; font-size: 16px; border: none; border-radius: 999px; padding: 10px 20px; cursor: pointer;
+  background: var(--vinyl); color: #fff; box-shadow: 0 4px 0 #9c0f55, var(--shadow); transition: transform .08s ease, filter .15s; }
+.k-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.k-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #9c0f55; }
+.k-btn.mint { background: linear-gradient(135deg, #b8ffe6, #3fcf9c); color: var(--ink); box-shadow: 0 4px 0 #23906a, var(--shadow); }
+.k-btn.ghost { background: rgba(255,255,255,.7); color: var(--ink); box-shadow: 0 3px 0 rgba(59,33,70,.35); }
+.k-btn:disabled { filter: grayscale(0.8); opacity: .6; cursor: not-allowed; }
+.k-meter { position: relative; height: 12px; border-radius: 999px; background: rgba(59,33,70,.15); overflow: hidden; }
+.k-meter > i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--mint-deep)); }
+.k-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 999px; background: var(--lilac); color: var(--ink); }
+.k-key { display: inline-block; min-width: 20px; padding: 1px 6px; border-radius: 6px; background: #fff; border: 1px solid var(--lavender); box-shadow: 0 2px 0 var(--lavender); font: 700 12px var(--font-body); color: var(--ink); text-align: center; }
+
+/* ───────── Primitivas kinky-kawaii (agente UI) ───────── */
+:root {
+  --rope: repeating-linear-gradient(60deg, #e4d6ff 0 3px, #a88be6 3px 5.5px, #cbb6fa 5.5px 8px, #8e6fd6 8px 9.5px);
+  --rope-mint: repeating-linear-gradient(60deg, #d9fff0 0 3px, #5fd6a8 3px 5.5px, #b3f5da 5.5px 8px, #3fb98b 8px 9.5px);
+  --gold-grad: linear-gradient(145deg, #fff0a8 0%, #f5c542 35%, #c9961b 70%, #ffe27a 100%);
+  --gloss: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.12) 45%, rgba(255,255,255,0) 50%);
+  --shadow-soft: 0 10px 30px rgba(59, 33, 70, 0.25), 0 2px 6px rgba(59, 33, 70, 0.18);
+  --glass-dark: rgba(43, 20, 54, 0.78);
+}
+/* Daltonismo: estados buenos/malos a azul/naranja (las formas siguen marcando el estado). */
+.cb-deuter, .cb-protan { --good: #2f8cff; --mint-deep: #2f8cff; --bad: #ff8a00; --warn: #ffd23f; }
+.cb-tritan { --good: #1fb8a8; --mint-deep: #1fb8a8; --bad: #ff3b6b; --warn: #ff9ecb; }
+
+/* Borde de cuerda shibari lavanda trenzada (respeta border-radius). */
+.k-rope { position: relative; }
+.k-rope::before { content: ''; position: absolute; inset: -5px; border-radius: inherit; padding: 5px; background: var(--rope);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  filter: drop-shadow(0 1px 1px rgba(59,33,70,.35)); pointer-events: none; z-index: 1; }
+.k-rope.mint::before { background: var(--rope-mint); }
+/* Panel de vinilo fucsia brillante. */
+.k-vinyl { position: relative; background: var(--vinyl); color: #fff; border-radius: var(--radius); box-shadow: var(--shadow-soft), inset 0 -3px 0 rgba(0,0,0,.18); }
+.k-vinyl::after { content: ''; position: absolute; left: 6px; right: 6px; top: 3px; height: 46%; border-radius: calc(var(--radius) - 4px) calc(var(--radius) - 4px) 40% 40% / calc(var(--radius) - 4px) calc(var(--radius) - 4px) 12px 12px;
+  background: var(--gloss); pointer-events: none; }
+/* Anilla en D dorada (decoración); la parte plana arriba. */
+.k-dring { display: inline-block; width: 16px; height: 12px; border: 3px solid #f5c542; border-top-width: 4px; border-radius: 2px 2px 10px 10px / 2px 2px 12px 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 2px rgba(0,0,0,.35); border-color: #f7cf52 #c9961b #b8850f #e8b93a; }
+.k-card { position: relative; background: var(--cream); border-radius: var(--radius); box-shadow: var(--shadow-soft); }
+@media (prefers-reduced-motion: reduce) { .k-anim { animation: none !important; } }

@@ -1,0 +1,12 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" style="width:100vw;height:100vh;display:block"></canvas>
+<script type="module">
+import * as THREE from 'three';
+const c = document.getElementById('c');
+const r = new THREE.WebGLRenderer({ canvas: c, antialias: true });
+r.setSize(innerWidth, innerHeight, false);
+const s = new THREE.Scene(); s.background = new THREE.Color('#c8a2e8');
+const cam = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 100); cam.position.set(0, 1, 3); cam.lookAt(0, 0, 0);
+s.add(new THREE.HemisphereLight('#fff', '#b79cf2', 2));
+const m = new THREE.Mesh(new THREE.TorusKnotGeometry(0.6, 0.2, 128, 16), new THREE.MeshPhysicalMaterial({ color: '#ff2e93', clearcoat: 1, roughness: 0.25 }));
+s.add(m); r.render(s, cam); console.log('rendered');
+</script></body></html>

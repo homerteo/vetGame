@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Audio · banco de pruebas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --lilac: #c8a2e8;
+        --lavender: #b79cf2;
+        --mint: #9ff0d0;
+        --mint-deep: #3fcf9c;
+        --bubblegum: #ff8fc7;
+        --fuchsia: #ff2e93;
+        --cream: #fff6fb;
+        --ink: #3b2146;
+        --gold: #f5c542;
+        --warn: #ffb347;
+        --bad: #ff4d6d;
+        --card: rgba(59, 33, 70, 0.9);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; background: radial-gradient(1200px 700px at 20% 0%, #2d1638 0%, #1c0f24 60%, #150a1b 100%); color: var(--cream); font-family: 'Nunito', system-ui, sans-serif; }
+      body { padding: 10px 16px 16px; }
+      header { display: flex; align-items: center; gap: 12px; height: 46px; }
+      header h1 { margin: 0; font: 900 21px 'Baloo 2', Nunito, system-ui, sans-serif; color: var(--bubblegum); letter-spacing: 0.3px; white-space: nowrap; }
+      header h1 small { color: var(--lilac); font-size: 13px; font-weight: 800; margin-left: 6px; }
+      .btn { border: 2px solid rgba(200, 162, 232, 0.45); background: rgba(59, 33, 70, 0.85); color: var(--cream); border-radius: 999px; padding: 5px 12px; font: 800 12.5px Nunito, system-ui, sans-serif; cursor: pointer; white-space: nowrap; transition: transform 0.06s, background 0.15s, border-color 0.15s; }
+      .btn:hover { border-color: var(--bubblegum); }
+      .btn:active, .btn.hit { transform: scale(0.95); }
+      .btn.on { background: linear-gradient(135deg, #ff4fa8, #ff2e93 45%, #c4136c); border-color: #ffd0e8; box-shadow: 0 3px 0 #9c0f55; }
+      .btn.big { font-size: 15px; padding: 7px 18px; }
+      .btn.unlock { background: linear-gradient(135deg, #9ff0d0, #3fcf9c); color: #0f3d2c; border-color: #d8fff0; box-shadow: 0 3px 0 #1f8f68; }
+      .btn.unlock.done { background: rgba(63, 207, 156, 0.18); color: var(--mint); box-shadow: none; }
+      .chip { font: 800 12px Nunito, system-ui, sans-serif; padding: 3px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.08); color: var(--lilac); white-space: nowrap; }
+      .chip b { color: var(--mint); }
+      .vols { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+      .vols label { display: flex; flex-direction: column; font: 800 10.5px Nunito, system-ui, sans-serif; color: var(--lilac); text-transform: uppercase; letter-spacing: 0.6px; }
+      .vols input[type=range] { width: 84px; }
+      input[type=range] { accent-color: var(--fuchsia); height: 16px; }
+      main { display: grid; grid-template-columns: 540px 352px 1fr; gap: 12px; margin-top: 6px; }
+      .col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+      .card { background: var(--card); border: 2px solid rgba(255, 143, 199, 0.35); border-radius: 16px; padding: 9px 12px 11px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3); }
+      .card h2 { margin: 0 0 7px; font: 900 12.5px Nunito, system-ui, sans-serif; color: var(--bubblegum); text-transform: uppercase; letter-spacing: 0.9px; display: flex; align-items: center; gap: 8px; }
+      .card h2 .hint { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 700; color: rgba(255, 246, 251, 0.55); font-size: 11.5px; }
+      #sfx { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+      .sfx { text-align: left; border-radius: 10px; padding: 4px 8px 4px 9px; line-height: 1.12; border-left-width: 5px; }
+      .sfx span { display: block; font: 700 9.5px ui-monospace, Menlo, monospace; color: rgba(255, 246, 251, 0.5); margin-top: 1px; }
+      .sfx.cat-q { border-left-color: var(--mint-deep); }
+      .sfx.cat-c { border-left-color: var(--bad); }
+      .sfx.cat-p { border-left-color: var(--gold); }
+      .sfx.cat-u { border-left-color: var(--lavender); }
+      .legend { display: flex; gap: 10px; font: 700 11px Nunito, system-ui, sans-serif; color: rgba(255, 246, 251, 0.7); margin-top: 7px; }
+      .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+      #loops { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+      #loops .btn { padding: 5px 4px; position: relative; }
+      #loops .btn.sel { outline: 2px solid var(--mint); outline-offset: 1px; }
+      #loops .btn .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); margin-right: 5px; vertical-align: 0; }
+      #loops .btn.on .dot { background: var(--mint); box-shadow: 0 0 6px var(--mint); }
+      .sliders { display: grid; grid-template-columns: 78px 1fr 34px; gap: 3px 8px; align-items: center; margin-top: 8px; font: 800 12px Nunito, system-ui, sans-serif; }
+      .sliders output { text-align: right; color: var(--mint); font: 800 11.5px ui-monospace, Menlo, monospace; }
+      .sliders .sub { color: rgba(255, 246, 251, 0.55); font-size: 10.5px; font-weight: 700; display: block; }
+      #music { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; }
+      #music .btn { text-align: left; }
+      #music .btn span { float: right; color: rgba(255, 246, 251, 0.55); font-size: 11px; }
+      #music .btn.on span { color: #ffe3f1; }
+      .beat { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
+      .beat .hearts { display: flex; gap: 5px; }
+      .beat .hearts div { width: 22px; height: 22px; font-size: 20px; line-height: 22px; text-align: center; color: rgba(255, 255, 255, 0.16); transition: color 0.05s, transform 0.08s; }
+      .beat .hearts div.lit { color: var(--fuchsia); transform: scale(1.25); text-shadow: 0 0 10px var(--fuchsia); }
+      .beat .hearts div.lit.down { color: var(--mint); text-shadow: 0 0 10px var(--mint); }
+      #beatInfo { font: 800 12px ui-monospace, Menlo, monospace; color: var(--lilac); }
+      .phase { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.1); margin-top: 6px; overflow: hidden; }
+      .phase div { height: 100%; width: 0; background: linear-gradient(90deg, var(--lavender), var(--bubblegum)); }
+      #tap { font: 800 12px Nunito, system-ui, sans-serif; margin-top: 6px; color: rgba(255, 246, 251, 0.75); }
+      #tap b { color: var(--gold); }
+      kbd { background: rgba(255, 255, 255, 0.14); border-radius: 5px; padding: 0 5px; font: 800 11px ui-monospace, monospace; color: var(--mint); }
+      .row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+      select, input[type=text] { background: rgba(0, 0, 0, 0.25); color: var(--cream); border: 2px solid rgba(200, 162, 232, 0.4); border-radius: 10px; padding: 4px 8px; font: 700 12.5px Nunito, system-ui, sans-serif; }
+      input[type=text] { flex: 1; min-width: 0; }
+      #monitorBox { display: flex; gap: 10px; align-items: stretch; }
+      #ecg { width: 128px; height: 74px; border-radius: 10px; background: #0f1b1a; border: 2px solid rgba(159, 240, 208, 0.35); }
+      .vital { font: 900 22px 'Baloo 2', Nunito, system-ui, sans-serif; line-height: 1; }
+      .vital small { font: 800 10.5px Nunito, system-ui, sans-serif; color: rgba(255, 246, 251, 0.6); margin-left: 3px; }
+      .vital.hr { color: var(--mint); }
+      .vital.sp { color: #8fd3ff; }
+      #pitch { font: 800 11px ui-monospace, Menlo, monospace; color: var(--lilac); margin-top: 3px; }
+      #presets { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 6px; }
+      #presets .btn { text-align: left; overflow: hidden; text-overflow: ellipsis; font-size: 11.5px; padding: 3px 9px; }
+      #presets .btn b { color: var(--bubblegum); }
+      #scope { width: 100%; height: 96px; display: block; border-radius: 10px; background: rgba(0, 0, 0, 0.28); }
+      #ttsInfo { font: 700 11px Nunito, system-ui, sans-serif; color: rgba(255, 246, 251, 0.6); margin-top: 5px; }
+      #calib { position: fixed; right: 16px; bottom: 16px; width: 420px; max-height: 60vh; overflow: auto; display: none; font: 700 11px ui-monospace, Menlo, monospace; }
+      #calib table { width: 100%; border-collapse: collapse; }
+      #calib td, #calib th { padding: 1px 4px; text-align: right; }
+      #calib td:first-child, #calib th:first-child { text-align: left; }
+      #calib .hot { color: var(--bad); }
+      #calib .cold { color: #8fd3ff; }
+      @media (max-width: 1100px) { main { grid-template-columns: 1fr; } .vols { display: none; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Audio procedural <small>· banco de pruebas</small></h1>
+      <button id="unlock" class="btn big unlock">▶ Activar audio</button>
+      <span class="chip" id="ctxState">contexto: <b>sin crear</b></span>
+      <div class="vols">
+        <label>Master<input type="range" id="vMaster" min="0" max="1" step="0.01" value="0.8" /></label>
+        <label>Música<input type="range" id="vMusic" min="0" max="1" step="0.01" value="0.7" /></label>
+        <label>Efectos<input type="range" id="vSfx" min="0" max="1" step="0.01" value="0.9" /></label>
+        <label>ASMR<input type="range" id="vAsmr" min="0" max="1" step="0.01" value="0.8" /></label>
+        <button class="btn" id="calibBtn" title="Render offline de cada efecto: pico y RMS">Calibrar</button>
+      </div>
+    </header>
+    <main>
+      <div class="col">
+        <div class="card">
+          <h2>Efectos <span class="hint">clic = play · mayús+clic = tono ×1,3 · alt+clic = intensidad 1</span></h2>
+          <div id="sfx"></div>
+          <div class="legend">
+            <span><i style="background: var(--mint-deep)"></i>Quirófano</span>
+            <span><i style="background: var(--bad)"></i>Crisis</span>
+            <span><i style="background: var(--gold)"></i>Personajes y clínica</span>
+            <span><i style="background: var(--lavender)"></i>Interfaz y ritmo</span>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <h2>Bucles ASMR <span class="hint">clic = on/off · seleccionado = sliders</span></h2>
+          <div id="loops"></div>
+          <div class="sliders" id="loopSliders"></div>
+        </div>
+        <div class="card">
+          <h2>Música <span class="hint">fundido cruzado</span></h2>
+          <div id="music"></div>
+          <div class="beat">
+            <div class="hearts" id="hearts"><div>♥</div><div>♥</div><div>♥</div><div>♥</div></div>
+            <div id="beatInfo">♩ 110 BPM</div>
+          </div>
+          <div class="phase"><div id="phaseBar"></div></div>
+          <div id="tap">Prueba de ritmo: pulsa <kbd>Espacio</kbd> a tempo → desfase: <b id="tapMs">—</b></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <h2>Monitor <span class="hint">pulsioxímetro</span></h2>
+          <div id="monitorBox">
+            <canvas id="ecg" width="256" height="148"></canvas>
+            <div style="flex: 1">
+              <div class="row" style="justify-content: space-between">
+                <span class="vital hr" id="hrOut">90<small>lpm</small></span>
+                <span class="vital sp" id="spOut">98<small>% SpO₂</small></span>
+              </div>
+              <div id="pitch">tono: 836 Hz</div>
+              <div class="row" style="margin-top: 6px">
+                <button class="btn" id="monOn">Monitor</button>
+                <button class="btn" id="alarmsOn">Alarmas</button>
+                <button class="btn" id="arrestOn">Paro</button>
+              </div>
+            </div>
+          </div>
+          <div class="sliders">
+            <span>FC</span><input type="range" id="hr" min="0" max="240" step="1" value="90" /><output id="hrV">90</output>
+            <span>SpO₂</span><input type="range" id="spo2" min="70" max="100" step="1" value="98" /><output id="spV">98</output>
+            <span>Ritmo</span>
+            <select id="rhythm" style="grid-column: span 2">
+              <option value="sinus">Sinusal</option>
+              <option value="tachy">Taquicardia</option>
+              <option value="brady">Bradicardia</option>
+              <option value="vfib">Fibrilación ventricular</option>
+              <option value="asystole">Asistolia</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Voces (TTS) <span class="hint"><label><input type="checkbox" id="tts" checked /> síntesis</label></span></h2>
+          <div class="row">
+            <select id="speaker"></select>
+            <input type="text" id="line" value="¡Aspiración en re menor, jefa!" />
+            <button class="btn on" id="say">Hablar</button>
+          </div>
+          <div id="presets"></div>
+          <div id="ttsInfo">voz: —</div>
+        </div>
+        <div class="card">
+          <h2>Salida <span class="hint" id="voicesHint">espectro del master</span></h2>
+          <canvas id="scope" width="640" height="192"></canvas>
+        </div>
+      </div>
+    </main>
+    <div id="calib" class="card"><h2>Calibración (render offline)</h2><div id="calibBody">calculando…</div></div>
+    <script type="module" src="./audio.ts"></script>
+  </body>
+</html>

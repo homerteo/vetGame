@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dev · Herida</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet" />
+    <style>
+      html, body { margin: 0; background: #2a1733; color: #fff6fb; font-family: 'Nunito', system-ui, sans-serif; }
+      h1 { font-family: 'Baloo 2', system-ui; font-size: 20px; margin: 6px 12px 2px; color: #ff8fc7; }
+      #grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; padding: 4px 10px; }
+      figure { margin: 0; background: #3b2146; border-radius: 10px; padding: 4px; }
+      figure canvas { width: 100%; display: block; border-radius: 7px; }
+      figcaption { font-size: 12px; font-weight: 700; padding: 2px 4px 0; color: #9ff0d0; }
+      #live { display: none; padding: 8px; gap: 12px; }
+      #live canvas { width: 900px; border-radius: 10px; box-shadow: 0 6px 30px #0008; }
+      #panel { display: flex; flex-direction: column; gap: 6px; font-size: 13px; min-width: 250px; }
+      #panel button { font: inherit; background: #c8a2e8; border: 0; border-radius: 8px; padding: 4px 8px; cursor: pointer; color: #3b2146; font-weight: 800; }
+      #stats { font-family: monospace; color: #9ff0d0; }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">Herida · galería de estados</h1>
+    <div id="grid"></div>
+    <div id="live">
+      <canvas id="liveCanvas"></canvas>
+      <div id="panel"></div>
+    </div>
+    <script type="module" src="./wound.ts"></script>
+  </body>
+</html>
