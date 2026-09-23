@@ -26,8 +26,8 @@ export interface ScrewCatchAPI {
 }
 
 /** Ventanas de tiempo (s) antes de escalar. */
-export const CATCH_PERFECT_SEC = 0.06;
-export const CATCH_GOOD_SEC = 0.14;
+export const CATCH_PERFECT_SEC = 0.08;
+export const CATCH_GOOD_SEC = 0.2;
 /** Sin pulsar hasta este tiempo tras la llegada → fallo (o nueva oferta). */
 export const CATCH_TIMEOUT_SEC = 0.25;
 /**
@@ -171,7 +171,17 @@ export function createScrewCatch(o: ScrewCatchOptions): ScrewCatchAPI {
     },
     press() {
       if (disposed || resolved) return;
-      resolve(classifyCatch(elapsed - arriveAt, ws));
+      const d = elapsed - arriveAt;
+      // Pulsar antes de tiempo no tira el tornillo: solo avisa. Se cae si llegas tarde o no pulsas.
+      if (d < -CATCH_GOOD_SEC * ws) {
+        pop.textContent = '¡Espera al anillo!';
+        root.classList.remove('sc-early');
+        void root.offsetWidth;
+        root.classList.add('sc-early');
+        o.audio.play('tick', { volume: 0.5 });
+        return;
+      }
+      resolve(classifyCatch(d, ws));
     },
     dispose() {
       disposed = true;

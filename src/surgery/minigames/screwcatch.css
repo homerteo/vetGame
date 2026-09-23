@@ -312,3 +312,5 @@
 
 @keyframes sb-in { from { transform: translateX(-50%) translateY(30px) scale(.9); opacity: 0; } }
 @keyframes sb-good { 50% { box-shadow: 0 0 0 6px rgba(159, 240, 208, .9), inset 0 3px 6px rgba(59, 33, 70, .18); } }
+/* Pulsación temprana: aviso sin tirar el tornillo. */
+.sc-early .sc-pop { color: #fff; animation: sc-pop .55s cubic-bezier(.2, 1.6, .4, 1) forwards; }

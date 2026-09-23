@@ -24,14 +24,14 @@ function setup(o: { beatTime?: number; bpm?: number; windowScale?: number; tremo
 }
 
 describe('classifyCatch', () => {
-  it('ventanas perfecto ±0,06 s y bien ±0,14 s, escaladas', () => {
+  it('ventanas perfecto ±0,08 s y bien ±0,2 s, escaladas', () => {
     expect(classifyCatch(0, 1)).toBe('perfect');
-    expect(classifyCatch(-0.05, 1)).toBe('perfect');
-    expect(classifyCatch(0.1, 1)).toBe('good');
-    expect(classifyCatch(-0.13, 1)).toBe('good');
-    expect(classifyCatch(0.2, 1)).toBe('miss');
-    expect(classifyCatch(0.1, 2)).toBe('perfect');
-    expect(classifyCatch(0.2, 1.5)).toBe('good');
+    expect(classifyCatch(-0.07, 1)).toBe('perfect');
+    expect(classifyCatch(0.15, 1)).toBe('good');
+    expect(classifyCatch(-0.19, 1)).toBe('good');
+    expect(classifyCatch(0.25, 1)).toBe('miss');
+    expect(classifyCatch(0.15, 2)).toBe('perfect');
+    expect(classifyCatch(0.28, 1.5)).toBe('good');
   });
 });
 
@@ -84,13 +84,16 @@ describe('createScrewCatch', () => {
     expect(results).toEqual(['good']);
   });
 
-  it('pulsar muy pronto es fallo', () => {
-    const { results, sc, layer, audio } = setup({ beatTime: 0 });
+  it('pulsar muy pronto no tira el tornillo: avisa y sigue esperando', () => {
+    const { results, sc, layer, audio } = setup({ beatTime: 0 }); // llega en 1,5
     sc.update(1.1);
     sc.press();
-    expect(results).toEqual(['miss']);
-    expect(layer.querySelector('.sc-pop')!.textContent).toBe('¡Se cayó!');
-    expect(audio.count('miss')).toBe(1);
+    expect(results).toEqual([]);
+    expect(layer.querySelector('.sc-pop')!.textContent).toBe('¡Espera al anillo!');
+    expect(audio.count('miss')).toBe(0);
+    sc.update(0.4);
+    sc.press();
+    expect(results).toEqual(['perfect']);
   });
 
   it('sin pulsar: Fritz insiste una vez (siguiente pulso con ≥ 1 s) y a la segunda se cae', () => {

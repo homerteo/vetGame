@@ -131,7 +131,7 @@ export class ScrewsStep extends BoneStep<ScrewsParams> {
 
   // ── (a) Atrapar ──
 
-  private startCatch(): void {
+  private startCatch(fromSpare = false): void {
     this.clearPanel();
     this.disposeCatcher();
     this.lingerIn = -1;
@@ -145,7 +145,8 @@ export class ScrewsStep extends BoneStep<ScrewsParams> {
       windowScale: this.ctx.settings.rhythmWindowScale * this.tolScale,
       audio: this.ctx.audio,
       // En el tutorial Fritz espera lo que haga falta; si no, insiste una vez.
-      reoffers: this.tutorial ? Number.POSITIVE_INFINITY : 1,
+      // El repuesto estéril tampoco se pierde: Fritz insiste hasta que lo atrapes.
+      reoffers: this.tutorial || fromSpare ? Number.POSITIVE_INFINITY : 1,
       onResult: (r) => this.onCatch(r),
     });
   }
@@ -466,7 +467,7 @@ export class ScrewsStep extends BoneStep<ScrewsParams> {
           const el = this.panel.querySelector('.sb-wait');
           if (el) el.textContent = `${Math.max(0, Math.ceil(this.spareLeft))} s`;
         }
-        if (this.spareLeft <= 0) this.startCatch();
+        if (this.spareLeft <= 0) this.startCatch(true);
         break;
       case 'pilot':
         this.pilot?.update(dt);
