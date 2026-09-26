@@ -69,10 +69,20 @@ export class RetractStep extends StepA<RetractParams> {
   }
 
   /** Último par ya colocado (−1 si ninguno). */
+  /**
+   * Par que recibe el clic de trinquete: el primer par colocado que aún no llega a la apertura
+   * ideal; si todos llegan, el último colocado. (Antes era siempre el último colocado: con dos
+   * separadores, colocar el segundo antes de abrir el primero dejaba el paso sin terminar.)
+   */
   private ratchetIdx(): number {
-    let r = -1;
-    for (let i = 0; i < this.pairs.length; i++) if (this.pairs[i].aPlaced && this.pairs[i].bPlaced) r = i;
-    return r;
+    let last = -1;
+    for (let i = 0; i < this.pairs.length; i++) {
+      const st = this.pairs[i];
+      if (!(st.aPlaced && st.bPlaced)) continue;
+      if (st.clicks < this.params.idealClicks) return i;
+      last = i;
+    }
+    return last;
   }
 
   onPointerMove(p: WoundPointer): void {

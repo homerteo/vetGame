@@ -26,6 +26,19 @@ describe('Separadores', () => {
     expect(f.audio.plays).toContain('squelch');
   });
 
+  it('colocar los dos separadores primero y abrir después también completa el paso', () => {
+    const { f, step, d } = setupStep('retract');
+    expect(params.pairs.length).toBeGreaterThanOrEqual(2);
+    for (const pair of params.pairs) {
+      d.click(pair.a.x, pair.a.y);
+      d.click(pair.b.x, pair.b.y);
+    }
+    for (let i = 0; i < params.idealClicks * params.pairs.length; i++) d.click(80, 30);
+    expect(step.isComplete()).toBe(true);
+    expect(f.wound.retraction).toBe(1);
+    expect(f.log.faultList).toHaveLength(0);
+  });
+
   it('la retracción es la media de clics/ideales entre pares', () => {
     const { f, d } = setupStep('retract');
     const p0 = params.pairs[0];
